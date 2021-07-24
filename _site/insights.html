@@ -105,7 +105,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title"]}},"value":[{"type":"character","attributes":{},"value":["Insights"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","toc"]}},"value":[{"type":"character","attributes":{},"value":["Insights"]},{"type":"logical","attributes":{},"value":[true]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2397,7 +2397,25 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
 <div class="d-article">
-<h2 id="section"></h2>
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+
+</nav>
+</div>
+<h2 id="findings-from-network-of-authors">Findings from Network of Authors</h2>
+<p>After exploring the network graphs, the nodes were grouped as follows:</p>
+<ul>
+<li><p>News: “AbilaPost”, “KronosStar”,“CentralBulletin”, “InternationalNews”, “NewsOnlineToday”</p></li>
+<li><p>Official: “AbilaFireDept”, “AbilaPoliceDepartment”</p></li>
+<li><p>Interest: “truccotrucco”, “megaMan”, “ben”, “Simon_Hamaeth”, “sofitees”, “hngohebo_ABILAPOST”, “HomelandIlluminations”</p></li>
+<li><p>Others: the rest</p></li>
+</ul>
+<p>Of the two centrality measures, degree centrality using the out strength was able to identify more informative nodes. Moreover, the betweenness centrality score dropped to zero very quickly making most of the nodes indistinguishable by their betweenness scores.</p>
+<h2 id="findings-from-examining-rts-and-mentions">Findings from Examining RTs and Mentions</h2>
+<p>The RTs and mentioned text messages alone were able to give a good overview of the key events of the evening as users of the social network are keen to pass on informative knowledge. Identifying key authors in the network helped to zoom in on the important messages quickly. By just looking at the news and <em>HomelandIllumniations</em>, the following key events were identified: A. POK rally at Abila City Park B. Fire at Dancing Dolphin at Achilleos &amp; Madeg C. A hit and run where a bicyclist was knocked down near Schaber D. A standoff with the police at a parking lot near Alexandrias and Ithakis</p>
+<p>RTs with mentions are more informative than non-RT tweets, especially if the author is a credible source or popular authority in the social network, like the news.</p>
+<p>In our interactive dot plot for mentions, there is a checkbox to filter messages based on whether they are RTs.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

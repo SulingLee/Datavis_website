@@ -1,5 +1,6 @@
 ---
 title: "Overview and Literature Review"
+toc: true
 ---
 
 ```{r setup, include=FALSE}

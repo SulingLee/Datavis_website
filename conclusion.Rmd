@@ -1,5 +1,6 @@
 ---
 title: "Conclusion"
+toc: true
 ---
 
 ```{r setup, include=FALSE}

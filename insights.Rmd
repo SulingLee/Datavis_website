@@ -1,9 +1,36 @@
 ---
 title: "Insights"
+toc: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.retina = 3,echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE)
 ```
 
-## 
+## Findings from Network of Authors 
+
+After exploring the network graphs, the nodes were grouped as follows: 
+
+* News: "AbilaPost", "KronosStar","CentralBulletin", "InternationalNews", "NewsOnlineToday"
+
+* Official: "AbilaFireDept", "AbilaPoliceDepartment"
+
+* Interest: "truccotrucco", "megaMan", "ben", "Simon_Hamaeth", "sofitees", "hngohebo_ABILAPOST", "HomelandIlluminations"
+
+* Others: the rest 
+
+Of the two centrality measures, degree centrality using the out strength was able to identify more informative nodes. Moreover, the betweenness centrality score dropped to zero very quickly making most of the nodes indistinguishable by their betweenness scores. 
+
+## Findings from Examining RTs and Mentions
+
+The RTs and mentioned text messages alone were able to give a good overview of the key events of the evening as users of the social network are keen to pass on informative knowledge. Identifying key authors in the network helped to zoom in on the important messages quickly. 
+By just looking at the news and *HomelandIllumniations*, the following key events were identified: 
+A.	POK rally at Abila City Park 
+B.	Fire at Dancing Dolphin at Achilleos & Madeg
+C.	A hit and run where a bicyclist was knocked down near Schaber 
+D.	A standoff with the police at a parking lot near Alexandrias and Ithakis
+
+
+RTs with mentions are more informative than non-RT tweets, especially if the author is a credible source or popular authority in the social network, like the news.
+
+In our interactive dot plot for mentions, there is a checkbox to filter messages based on whether they are RTs.   
