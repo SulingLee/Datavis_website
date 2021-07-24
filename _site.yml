@@ -1,0 +1,16 @@
+name: "Datavis_website"
+title: "VAST Challenge 2021 Mini-Challenge 3"
+description: |
+  My Website
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Background"
+      href: background.html
+
+output: distill::distill_article
+

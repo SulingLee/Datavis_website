@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Overview and Literature Review</title>
+
+<!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content=""/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+<!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+<style type="text/css">
+body {
+  padding-top: 60px;
+}
+</style>
+<script src="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\pandoc\header-attrs.js"></script>
+<script src="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\jquery\jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\bootstrap\css\bootstrap.min.css" rel="stylesheet" />
+<script src="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\bootstrap\js\bootstrap.min.js"></script>
+<script src="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\bootstrap\shim\html5shiv.min.js"></script>
+<script src="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\bootstrap\shim\respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\navigation-1.1\tabsets.js"></script>
+<link href="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\highlightjs\default.css" rel="stylesheet" />
+<script src="C:\Users\femto\OneDrive\Documents\R\win-library\4.0\rmarkdown\rmd\h\highlightjs\highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="index.html" class="title">VAST Challenge 2021 Mini-Challenge 3</a>
+</div>
+<div class="nav-right">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="background.html">Background</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="background.html">Background</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Overview and Literature Review</h1>
+
+</div>
+
+
+<div id="about" class="section level2">
+<h2>About</h2>
+<p>The <a href="http://www.vacommunity.org/About+the+VAST+Challenge">IEEE Visual Analytics Science and Technology (VAST) Challenge</a> is an annual contest with the goal of advancing the field of visual analytics through competition. The VAST Challenge is designed to help researchers understand how their software would be used in a novel analytic task and determine if their data transformations, visualizations, and interactions would be beneficial for particular analytic tasks.</p>
+<p>This project is based on the VAST Challenge 2021 – The Kronos Incident <a href="https://vast-challenge.github.io/2021/MC3.html">Mini challenge 3</a> which involves analysis of a collection of microblogs and emergency calls on January 23, 2014 from 1700 to shortly after 2130 where multiple events unfolded.</p>
+<p>Visual analysis is used to uncover meaningful information to piece together the significant events that took place as well as provide analysis on the level of risk and recommend retrospectively where a team of first responders could have been sent to mitigated the risks more effectively. All visualisations will be created with R.</p>
+</div>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>In the roughly twenty years that Tethys-based GAStech has been operating a natural gas production site in the island country of Kronos, it has produced remarkable profits and developed strong relationships with the government of Kronos. However, GAStech has not been as successful in demonstrating environmental stewardship.</p>
+<p>In January, 2014, the leaders of GAStech are celebrating their new-found fortune as a result of the initial public offering of their very successful company. During this celebration, several employees of GAStech go missing. An organization known as the Protectors of Kronos (POK) is suspected in the disappearance, but things may not be what they seem. On January 23, 2014, multiple events unfolded in the city of Abila on Kronos Island which affected the safety of the residents.</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>The data contains a single data stream from two major sources:</p>
+<ul>
+<li><p>Microblog records that have been identified by automated filters as being potentially relevant to the ongoing incident. These microblog records resemble tweets and are without images. The @ symbol is used to designate a username within the body of a message. Hashtags (#) are used to relate the message to specific topics. “RT” at the start of a message indicates that it the current user is re-sending another user’s message. Spam and junk messages are also common.</p></li>
+<li><p>Call centre text transcripts of emergency dispatches by the Abila, Kronos local police and fire departments.</p></li>
+</ul>
+<p>The data stream is divided into three parts by time:</p>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="12%" />
+<col width="16%" />
+<col width="20%" />
+<col width="20%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Source</th>
+<th align="center">Time</th>
+<th align="center">csv file name</th>
+<th align="center">Total number of records</th>
+<th align="center">No. of microblog records</th>
+<th align="center">No. of call centre records</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Part1</td>
+<td align="center">1700 – 1830</td>
+<td align="center">csv-1700-1830.csv</td>
+<td align="center">1033</td>
+<td align="center">971</td>
+<td align="center">62</td>
+</tr>
+<tr class="even">
+<td align="center">Part2</td>
+<td align="center">1831 – 2000</td>
+<td align="center">csv-1831-2000.csv</td>
+<td align="center">1815</td>
+<td align="center">1724</td>
+<td align="center">91</td>
+</tr>
+<tr class="odd">
+<td align="center">Part3</td>
+<td align="center">2001 - 2131</td>
+<td align="center">csv-2001-2131.csv</td>
+<td align="center">1215</td>
+<td align="center">1177</td>
+<td align="center">38</td>
+</tr>
+</tbody>
+</table>
+<p>Each csv file contains the following information:</p>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="60%" />
+<col width="32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Column</th>
+<th align="left">Description</th>
+<th align="left">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Type</td>
+<td align="left">Indicates if the record is from the microblog (mbdata) or from the call center (ccdata).</td>
+<td align="left"><em>mbdata; ccdata</em></td>
+</tr>
+<tr class="even">
+<td align="left">Datetime</td>
+<td align="left">The timestamp of the record in the yyyyMMddHHmmss format</td>
+<td align="left"><em>2014/01/23 17:10:00</em></td>
+</tr>
+<tr class="odd">
+<td align="left">Author</td>
+<td align="left">The author of the microblog text. Left blank for ccdata.</td>
+<td align="left"><em>KronosQuoth; megaMan</em></td>
+</tr>
+<tr class="even">
+<td align="left">Message</td>
+<td align="left">The text message. Includes retweets (RT), mentions(@) and hashtags (#).</td>
+<td align="left"><em>RT <span class="citation">@AbilaPost</span> POK rally set to take place in Abila City Park - POK leader Sylvia Marek has begun with opening remarks #AbilaPost</em></td>
+</tr>
+<tr class="odd">
+<td align="left">Latitude</td>
+<td align="left">Latitude of the record, for mbdata. Many missing entries.</td>
+<td align="left"><em>36.1</em></td>
+</tr>
+<tr class="even">
+<td align="left">Longitude</td>
+<td align="left">Longitude of the record, for mbdata. Many missing entries.</td>
+<td align="left"><em>24.9</em></td>
+</tr>
+<tr class="odd">
+<td align="left">Location</td>
+<td align="left">Only available for ccdata, indicates the location of the dispatch.</td>
+<td align="left"><em>N. Carnero St / N. Pilai St</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<p>The challenge is to use visual analytics to extract important information from the collection of records and answer the following questions:<br />
+* What are the characteristics of junk text and important text?<br />
+* Are retweets important?<br />
+* Who are the influential authors in the network?<br />
+* What is are the significant events during the evening?<br />
+* What are the indicators of risks as the evening progressed?<br />
+* Where were the response team deployed?</p>
+<ul>
+<li><p>What distinguishes meaningful event reports from typical chatter from junk or spam?</p></li>
+<li><p>Use visual analytics to represent and evaluate how the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected.<br />
+If a team of first responders could be sent to any single place, where would it be? How might this response be different if you had to respond to the events in real time rather than retrospectively?</p></li>
+</ul>
+<p>This project will also document the building of suitable interactive visualisations in R to aid the analysis of the data.</p>
+</div>
+<div id="literature-review-of-current-visualisations" class="section level2">
+<h2>Literature Review of Current Visualisations</h2>
+<p>The best visualisations for the VAST Challenge 2014 are published <a href="http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/">here</a>. As the dataset for the 2014 Mini-Challenge 3 is the same as the 2021 challenge, I looked at some of the best visualisations that were created by the top teams.</p>
+<div class="figure">
+<img src="Img/VAST_tianjin.jpg" alt="" />
+<p class="caption">alt text here</p>
+</div>
+<p>The dashboard by team <a href="http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Tianjin%20University/">“TJU-Yang-MC3”</a>, created by members for the Tianjin University for VAST Challenge 2014, Mini-challenge 3 received a Honorable Mention for good support for streaming and forensic analysis.</p>
+<p>The dashboard consists of a timeline, wordcloud, map and display of the tweets at the bottom allowing the user to view the events as they unfold by the timeline. There are buttons indicating that the dashboard could be linked to further visualisations. It is not shown how the user can filter the dataset interactively. If the component plots are linked and filtered, the user will be able to perceive the information effectively.</p>
+<p>However, it is not seen from the dashboard how RT, mentions and hashtags were analysed. In a social network, the “wisdom of the crowd” can be revealed in examining frequent retweets or mentions. Moreover, following influential and knowledgeable authors can lead to quicker identification of important events instead of filtering and examining the many messages to extract the required information manually.</p>
+<p>Another approach to the VAST Challenge involves using a few different interactive visual charts and switching between them as necessary.</p>
+<div class="figure">
+<img src="Img/VAST_ukon.jpg" alt="" />
+<p class="caption">alt text here</p>
+</div>
+<p>This method allowed users to focus on gaining the understanding first from one visualisation before moving on to another to drill down on further details to gain insights. Colour is applied to aid the user to see the connection between visualisations. However, filtering the data to gain insights from the specific tweets this way can be difficult as these messages are still ordered by timeline. It would be more effective if once a meaningful key author or keyword has been identified, be able to extract all the associated messages for analysis.</p>
+<p>For example, team <a href="http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Peking%20University/">“PKU-Liu-MC3”</a> created a keyword analyser to identify the time period where certain keywords are trending to identify key events.</p>
+<div class="figure">
+<img src="Img/VAST_keyword.jpg" alt="" />
+<p class="caption">alt text here</p>
+</div>
+<p>Most of these approaches relied on using maps, timelines and some form of display of the actual text message.</p>
+</div>
+<div id="suggested-visualisations" class="section level2">
+<h2>Suggested Visualisations</h2>
+<p>Majority of the interactive visualisations presented the messages from a timeline view. While this is important, meaningful messages tend to originate from only a few authors in a social network and tend to be quickly retweeted or mentioned again. Hence, it would be useful to have the messages visualised by author, hashtag or mention frequency for influential and meaningful messages to be quickly identified.</p>
+<p>Using the “wisdom of crowd” in a social network can also be helpful in understanding the situation on the ground. User given hashtags can be important filters in a rapidly escalating situations where there are many text outputs. Also, frequent keywords or trending hashtags can provide an indication of how a situation is evolving.</p>
+<p>In this project, interactive visualisations similar to a dashboard will be created to place all the key information such as time, author, mentions, text message, etc into a single visualisation for the initial exploration. This will allow the user to see how the events unfold and identify the indicators of important messages.</p>
+<p>In particular, we will use the R <a href="https://plotly.com/r/">Plotly</a> package as it has a customisable filters and a number of interactive features. Instead of scrolling datatables used by the visualisations in the literature review, I will use <em>plotly tooltip</em> so that the user will not need to divert attention away from the chart to view the messages. Since the messages are short tweets, they will also fit comfortably in the chart space and appear on hover when needed.</p>
+</div>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

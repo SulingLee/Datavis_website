@@ -1,0 +1,15 @@
+---
+title: "VAST Challenge 2021 Mini-Challenge 3"
+description: |
+  This website showcases how visual analytics using *R* can be applied to solve the *VAST Challenge 2021 Mini-Challenge 3: The Kronos Incidence Redux* as an assignment for ISSS608 - Visual Analytics and Applications, Singapore Management University.
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+```
+
