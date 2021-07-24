@@ -1,11 +1,12 @@
 ---
 title: "Overview and Literature Review"
-output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.retina = 3,echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE)
 ```
+
+![](Img/VAST_Kronos.jpg)  
 
 ## About
 
@@ -54,11 +55,17 @@ Each csv file contains the following information:
 ## Objectives
 
 The challenge is to use visual analytics to extract important information from the collection of records and answer the following questions:  
-* What are the characteristics of junk text and important text?   
+
+* What are the characteristics of junk text and important text? 
+
 * Are retweets important?   
+
 * Who are the influential authors in the network?   
-* What is are the significant events during the evening?   
+
+* What is are the significant events during the evening?  
+
 * What are the indicators of risks as the evening progressed?   
+
 * Where were the response team deployed?   
 
 * What distinguishes meaningful event reports from typical chatter from junk or spam?   
@@ -72,7 +79,7 @@ This project will also document the building of suitable interactive visualisati
 
 The best visualisations for the VAST Challenge 2014 are published [here](http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/). As the dataset for the 2014 Mini-Challenge 3 is the same as the 2021 challenge, I looked at some of the best visualisations that were created by the top teams.  
 
-![alt text here](Img/VAST_tianjin.jpg)  
+![](Img/VAST_tianjin.jpg)  
 
 The dashboard by team [“TJU-Yang-MC3”]( http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Tianjin%20University/), created by members for the Tianjin University for VAST Challenge 2014, Mini-challenge 3 received a Honorable Mention for good support for streaming and forensic analysis.  
 
@@ -82,13 +89,13 @@ However, it is not seen from the dashboard how RT, mentions and hashtags were an
 
 Another approach to the VAST Challenge involves using a few different interactive visual charts and switching between them as necessary.  
 
-![alt text here](Img/VAST_ukon.jpg)  
+![](Img/VAST_ukon.jpg)  
 
 This method allowed users to focus on gaining the understanding first from one visualisation before moving on to another to drill down on further details to gain insights. Colour is applied to aid the user to see the connection between visualisations. However, filtering the data to gain insights from the specific tweets this way can be difficult as these messages are still ordered by timeline. It would be more effective if once a meaningful key author  or keyword has been identified, be able to extract all the associated messages for analysis.   
 
 For example, team [“PKU-Liu-MC3”]( http://visualdata.wustl.edu/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Peking%20University/) created a keyword analyser to identify the time period where certain keywords are trending to identify key events.      
 
-![alt text here](Img/VAST_keyword.jpg)   
+![](Img/VAST_keyword.jpg)   
 
 Most of these approaches relied on using maps, timelines and some form of display of the actual text message.  
 
@@ -100,8 +107,10 @@ Using the “wisdom of crowd” in a social network can also be helpful in under
 
 In this project, interactive visualisations similar to a dashboard will be created to place all the key information such as time, author, mentions, text message, etc into a single visualisation for the initial exploration. This will allow the user to see how the events unfold and identify the indicators of important messages.   
 
-In particular, we will use the R [Plotly]( https://plotly.com/r/) package as it has a customisable filters and a number of interactive features. Instead of scrolling datatables used by the visualisations in the literature review, I will use *plotly tooltip* so that the user will not need to divert attention away from the chart to view the messages. Since the messages are short tweets, they will also fit comfortably in the chart space and appear on hover when needed.  
+In particular, we will use the R [Plotly]( https://plotly.com/r/) package as it has a customisable filters and a number of interactive features. Instead of scrolling datatables used by the visualisations in the literature review, I will use *plotly tooltip* so that the user will not need to divert attention away from the chart to view the messages. Since the messages are short tweets, they will also fit comfortably in the chart space and appear on hover when needed.   
 
+![](Img/plotly1.jpg)  
+![](Img/plotly2.jpg)  
 
 
 

@@ -1,5 +1,6 @@
 name: "Datavis_website"
 title: "VAST Challenge 2021 Mini-Challenge 3"
+theme: theme.css
 description: |
   My Website
 output_dir: "_site"
@@ -11,6 +12,12 @@ navbar:
       href: about.html
     - text: "Background"
       href: background.html
+    - text: "Methodology"
+      href: methodology.html
+    - text: "Insights"
+      href: insights.html
+    - text: "Conclusion"
+      href: conclusion.html
 
 output: distill::distill_article
 
