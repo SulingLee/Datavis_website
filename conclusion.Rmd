@@ -7,4 +7,121 @@ toc: true
 knitr::opts_chunk$set(fig.retina = 3,echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE)
 ```
 
-## 
+## Conclusions and Comments 
+
+The methods most effective in quickly filtering the dataset for meaningful information are:
+
+1. A network graph of RTs and mentions with out degree betweenness centrality to identify the key authors. 
+
+2. A dot plot of RTs and mentions that allows for interactive filtering to read the selected text messages. 
+
+3. A dot plot of hashtags that allows for interactive filtering to read the slected text messages grouped by hashtags. 
+
+Indicators of risk levels: 
+
+1. Wordpair network with heatmap of wordpair frequency can show what are the trending wordpairs and phrases. Using wordpairs will give amuch better context than using single word tokens. Including RTs allows for the detection of trending wordpairs. 
+
+2. Using a layered method to filter for information and extracting the text messages from it allows us to construct a better understanding of the situation. 
+
+Some ways to further investigate this dataset could include using an integrated dashboard to put the various visualisations, like the wordpair network and heatmap plots together. 
+
+## Appendix 
+
+Code for visNetwork graph with visPhysics
+
+```
+library(visNetwork)
+
+comb1_mentions3 <- comb1_mentions2 %>% 
+  mutate(mentions = str_remove(mentions, "^\\@"))
+
+author_unique <- comb1_mentions3 %>% 
+  select(author) %>% 
+  distinct(author) %>% 
+  rename(label = author)
+
+mentions_unique <- comb1_mentions3 %>% 
+  select(mentions) %>% 
+  distinct(mentions) %>% 
+  rename(label = mentions)
+
+nodes <- full_join(author_unique, mentions_unique, by = "label") %>% 
+  arrange(label)
+
+nodes <- nodes %>% 
+  rowid_to_column("id") %>% 
+  mutate(group = if_else(label == "AbilaPost" |
+                           label == "KronosStar" | 
+                           label == "CentralBulletin" | 
+                           label == "InternationalNews"| 
+                           label == "NewsOnlineToday", "news", 
+                         if_else(label == "AbilaFireDept" |
+                                   label =="AbilaPoliceDepartment", 
+                                 "official" , 
+                                 if_else(label == "truccotrucco"| 
+                                           label == "megaMan"|
+                                          label=="HomelandIlluminations",
+                                         "interest",  
+                                         "others")
+                                 )
+                         )
+         )
+
+edge <- comb1_mentions3 %>% select(author, mentions, Text)
+
+edges <- edge %>% 
+  left_join(nodes, by = c("mentions" = "label")) %>% 
+  rename(from = id)
+
+edges <- edges %>% 
+  left_join(nodes, by = c("author" = "label")) %>% 
+  rename(to = id) %>% 
+  rename(title = Text)
+
+edges <- select(edges, from, to,title) %>% 
+  group_by(from) %>% 
+  add_tally() %>% 
+  ungroup() 
+
+nodes <- nodes %>% 
+  left_join(select(edges, n, from), by = c("id" = "from")) %>% 
+  distinct(id, label, group, n) %>% 
+  rename(value = n) 
+
+#%>% mutate(shape ="dot")
+
+legend_nodes <- data.frame(label = unique(nodes$group))
+
+visNetwork(nodes, edges, 
+           main = "Network of Mentions", 
+           height = "500px", width = "100%") %>% 
+  visEdges(arrows = "top")%>%  
+  visInteraction(dragNodes = TRUE, 
+                 dragView = TRUE, 
+                 zoomView = TRUE, 
+                 multiselect = TRUE,
+                 navigationButtons = TRUE, 
+                 tooltipStyle = 'position: fixed;
+                 visibility:hidden;
+                 padding: 5px;
+                 white-space: wrap; 
+                 font-family:cursive;
+                 font-size:12px;
+                 font-color:purple;
+                 background-color: blue;') %>% 
+  visNodes( labelHighlightBold = TRUE, 
+            font = list(size=30), shape="box") %>% 
+  visOptions(highlightNearest = list(enabled = TRUE, 
+                                     hover = FALSE, 
+                                     algorithm = "hierarchical"),
+             nodesIdSelection = list(enabled = TRUE, 
+                                     main = "Mentioned"),
+             selectedBy = list(variable="group", main="Type"))  %>%
+  visLegend(width=0.2, position="right", 
+            zoom=FALSE, useGroups = TRUE) %>% 
+  visPhysics(stabilization=FALSE, 
+             solver="forceAtlas2Based", 
+             forceAtlas2Based = list(gravitationalConstant=-100)
+             )
+```
+

@@ -68,14 +68,16 @@ comb$datetime <- gsub("^(\\d{4})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})$",
 
 comb$datetime <-strptime(comb$datetime,format = "%d-%m-%Y %H:%M:%S")
 comb$date <- as.Date(comb$datetime, format = "%d/%m/%Y H:M:S")
-comb$time <- format(as.POSIXct(comb$datetime,format="%d-%m-%Y %H:%M:%S"),"%H:%M:%S")
+comb$time <- format(as.POSIXct(comb$datetime,format="%d-%m-%Y %H:%M:%S"),
+                    "%H:%M:%S")
 comb$time <- as_hms(comb$time)
 ```
 
 The data frame is converted to a tibble using *as_tibble*. As the records are from a microblog which can contain some special characters, all columns of the *character* type converted to *UTF-8*.   
 
 ```{r}
-comb <- as_tibble(comb) %>% mutate_if(is.character, function(col) iconv(col, to="UTF-8"))
+comb <- as_tibble(comb) %>% mutate_if(is.character, function(col) 
+  iconv(col, to="UTF-8"))
 ```
 
 The filenames in *source* are quite long, so they are renamed as *”Part1”*, *”Part2”* and *”Part3”* respectively. I also renamed *message* to *text* for better comprehension.  
@@ -338,10 +340,12 @@ The [ggraph]( https://www.rdocumentation.org/packages/ggraph/versions/2.0.5) pac
 g2 <-
   ggraph(mentions_graph, layout = "nicely") + 
   geom_edge_link(edge_colour = "gray77", alpha = 0.5) +
-  geom_node_point(aes(colour = centrality_closeness(), size=centrality_betweenness())) +
+  geom_node_point(aes(colour = centrality_closeness(),
+                      size=centrality_betweenness())) +
   theme_graph() + scale_colour_gradient(low = "#00008B", high = "#63B8FF") + 
   geom_node_text(aes(label = label,size=25), repel = TRUE) + 
-  ggtitle("Network Graph of Mentions using Centrality") + theme(text=element_text(family="mono"))
+  ggtitle("Network Graph of Mentions using Centrality") +
+  theme(text=element_text(family="mono"))
 
 g2
 ```
@@ -361,8 +365,14 @@ dragView = TRUE,
 zoomView = TRUE, 
 multiselect = TRUE,
 navigationButtons = TRUE, 
-tooltipStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: wrap;
- font-family: cursive;font-size:12px;font-color:purple;background-color: blue;') %>%
+tooltipStyle = 'position: fixed;
+visibility:hidden;
+padding: 5px;
+white-space: wrap;
+ font-family: cursive;
+font-size:12px;
+font-color:purple;
+background-color: blue;') %>%
   visNodes( labelHighlightBold = TRUE, font = list(size=30), shape="box") %>%
   visOptions(highlightNearest = list(enabled = TRUE, 
                                      hover = FALSE, 
@@ -459,9 +469,18 @@ For example, *HomelandIlluminations* was the first to report the fire at Achille
 The text messages from the *news group* are extracted and further filtered to get a summary of the events. 
 
 ```{r}
-news_group <- c("@AbilaPost", "@KronosStar","@CentralBulletin", "@InternationalNews", "@NewsOnlineToday", "@HomelandIlluminations")
+news_group <- c("@AbilaPost", 
+                "@KronosStar",
+                "@CentralBulletin", 
+                "@InternationalNews", 
+                "@NewsOnlineToday", 
+                "@HomelandIlluminations")
 
-news <- comb1_mentions2 %>% dplyr::filter(mentions %in% news_group) %>% dplyr::select(Text, time, mentions) %>% arrange(time) %>% distinct(Text, time) 
+news <- comb1_mentions2 %>% 
+  dplyr::filter(mentions %in% news_group) %>% 
+  dplyr::select(Text, time, mentions) %>% 
+  arrange(time) %>% 
+  distinct(Text, time) 
 
 glimpse(news)
 ```
@@ -490,7 +509,7 @@ comb1_hashtag2 <- comb1 %>%
   mutate(hashtags = str_extract_all(Text, "#\\S+")) %>% 
   unnest(hashtags)%>% 
   group_by(hashtags) %>% 
-  mutate(n = row_number(hashtags)) %>% #add_tally() %>% 
+  add_tally() %>% 
   ungroup() %>% 
   arrange(time)
 ```
@@ -562,7 +581,9 @@ Some further preparation was necessary to prepare the *mbdata* for analysis. *st
 
 ```{r}
 comb1_clean <- comb1 %>% 
-  filter(author != "KronosQuoth" & author != "Clevvah4Evah" & author != "trollingsnark") %>%
+  filter(author != "KronosQuoth" & 
+           author != "Clevvah4Evah" & 
+           author != "trollingsnark") %>%
   filter(type == "mbdata") %>% 
   mutate(Text = str_replace_all(Text, "^RT |@\\S+|#\\S+|\\S+\\.\\S+\\/\\S+", "")) %>% 
   mutate(Text = removeWords(Text, stop_words$word)) %>% 
@@ -744,7 +765,9 @@ The interactive dot plot is similar to the previous dot plots created for *menti
 ```{r}
 comb1_authors2 <- comb1 %>% 
   mutate(author = replace_na(author, "cc" )) %>% 
-  filter(author != "KronosQuoth" & author != "Clevvah4Evah" & author != "trollingsnark")%>% 
+  filter(author != "KronosQuoth" & 
+           author != "Clevvah4Evah" & 
+           author != "trollingsnark")%>% 
   group_by(author) %>% 
   mutate(n = row_number(author)) %>% 
   ungroup() %>% 
@@ -789,7 +812,8 @@ Some keys authors have been earlier identfied to be involved in the Fire and Pol
 Another indiction that the risk level has increase is when *ccdata* and *HomelandIllumninations* reported that extra fire units were dispatched and the residents were further evacuated from the burning building at around 19:25. Also later at 20:35 where *GreyCatCollectibles* tweeted,"oh my oh my oh my. Everything is gone!" indicating this might be the time where the top floor collapsed.  
 
 ```{r}
-comb1_authors2 %>% filter(author == "GreyCatCollectibles") %>% dplyr::select(Text, time)
+comb1_authors2 %>% filter(author == "GreyCatCollectibles") %>% 
+  dplyr::select(Text, time)
 ```
 
 
@@ -804,5 +828,10 @@ The AbilaPost reported "close to 200 people have gathered to watch standoff..." 
 ```{r}
 
 comb1_authors2 %>% filter(author == "megaMan") %>% dplyr::select(Text, time)
-```
+```   
 
+![](Img/map.jpg)  
+
+*dangermice* and *hennyhenhendrix* were previously identified from the map. Looking at their tweets, I found out that *dangermice* is very near to location of *Dancing Dolphin* as he is able to see the fire. While *hennyhenhendrix* car was hit by the black van before it knocked down the bicyclist.  
+
+![](Img/4.jpg) 

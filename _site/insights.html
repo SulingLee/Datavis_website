@@ -2375,7 +2375,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
-<a href="about.html">About</a>
 <a href="background.html">Background</a>
 <a href="methodology.html">Methodology</a>
 <a href="insights.html">Insights</a>
@@ -2411,68 +2410,108 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li>Fire at Dancing Dolphin</li>
 <li>Police Standoff at a parking lot near Alexandrias and Ithakis</li>
 </ol>
-<p><img src="Img/events.jpg" /><br />
-### Groups of Authors</p>
-<p>News Sources * News: “AbilaPost”, “KronosStar”,“CentralBulletin”, “HomelandIlluminations”, “InternationalNews”, “NewsOnlineToday”</p>
-<p>Official Sources * Official: “AbilaFireDept”, “AbilaPoliceDepartment”</p>
-<p>Call Centre text dispatch messages * “cc”</p>
-<p>Authors of Interest (identified by exploring the dataset) * Interest: “truccotrucco”, “megaMan”, “ben”, “GreyCatCollectibles”, “sofitees”, “hngohebo_ABILAPOST”,</p>
-<p>The rest * Others</p>
+<p><img src="Img/events.jpg" /></p>
+<h3 id="groups-of-authors">Groups of Authors</h3>
+<p>News Sources</p>
+<ul>
+<li>News: “AbilaPost”, “KronosStar”,“CentralBulletin”, “HomelandIlluminations”, “InternationalNews”, “NewsOnlineToday”</li>
+</ul>
+<p>Official Sources</p>
+<ul>
+<li>Official: “AbilaFireDept”, “AbilaPoliceDepartment”</li>
+</ul>
+<p>Call Centre text dispatch messages</p>
+<ul>
+<li>“cc”</li>
+</ul>
+<p>Authors of Interest (identified by exploring the dataset)</p>
+<ul>
+<li>Interest: “truccotrucco”, “megaMan”, “ben”, “GreyCatCollectibles”, “sofitees”, “hennyhenhendrix”, “dangermice”, prettyRain“,”Simon_Hamaeth“,”martaflores".</li>
+</ul>
+<p>The rest</p>
+<ul>
+<li>Others</li>
+</ul>
 <h2 id="what-distinguishes-meaningful-event-reports-from-typical-chatter-from-junk-or-spam">What distinguishes meaningful event reports from typical chatter from junk or spam?</h2>
 <p>Using count, RTs, mentions and hashtags are effective blunt filter for junk and spam.</p>
 <ol type="1">
 <li>Count</li>
 </ol>
-<p>The frequncy of tweets can give us an indication of whether they are meaningful. For example, we excluded <em>KronosQuoth</em> and <em>Clevvah4Evah</em> as these authors have posted an extrodinary amount of tweets and hashtags, but with no mentions or RTs.</p>
+<p>The frequncy of tweets can give us an indication of whether they are meaningful. For example, we excluded <em>KronosQuoth</em> and <em>Clevvah4Evah</em> as these authors have posted an extraordinary amount of tweets and hashtags, but with no mentions or RTs.</p>
+<p><img src="Img/1.jpg" /></p>
 <ol start="2" type="1">
 <li>Mentions Network Graph</li>
 </ol>
-<p>The social network in the micro-blog data revealed the groups of authors in the network. Of the centrality measures that was used, degree centrality using the out strength was able to identify more informative authors and I was able to identify the new sources and some authors of interest. The news group proved to be the most valuable and informative sources of information.</p>
+<p>The social network in the micro-blog data revealed the groups of authors in the network. Of the centrality measures that was used, degree centrality using the out strength was able to identify more informative authors and I was able to identify the new sources and some authors of interest. The news group proved to be the most valuable and informative source of information.</p>
+<p><img src="Img/net_news.jpg" /></p>
 <ol start="3" type="1">
 <li>Dot Plot of RTs and Mentions</li>
 </ol>
 <p>The RTs and mentioned text messages alone were able to give a good overview of the key events of the evening as users of the social network are keen to pass on informative knowledge. Identifying news sources and key authors of interest in the network helped to zoom in on the important messages quickly.</p>
 <p>The dot plot allows for filtering of RTs. I found that RTs with mentions are more informative than non-RT tweets, especially if the author is a credible source or popular authority in the social network, like the news.</p>
+<p><img src="Img/plotly2.jpg" /></p>
 <ol start="4" type="1">
 <li>Dot Plot of Hashtags</li>
 </ol>
-<p>From the barchart of hastags, we see that the number of hashtags in a tweet is not a good indicator of the quality of the message. However, using the “wisdom of crowds”, the <em>#hashtags</em> dot plot is an effective method of building a understanding of the sequence of events once the events have been identified. For example, the user can pick out the relevant hashtag keywords from the dropdown list and do some further filtering by time to narrow down the search. In general, hashtags that are more specific, like “#dancingdolphinfire” as opposed to “#fire” gives more meaningful messages.</p>
+<p>From the barchart of hastags, we see that the number of hashtags in a tweet is not a good indicator of the quality of the message. However, using the “wisdom of crowds”, the <em>#hashtags</em> dot plot is an effective method of building a understanding of the sequence of events once the events have been identified.</p>
+<p>For example, the user can pick out the relevant hashtag keywords from the dropdown list and do some further filtering by time to narrow down the search. In general, hashtags that are more specific, like “#dancingdolphinfire” as opposed to “#fire” gave more meaningful messages.</p>
+<p><img src="Img/hashfire.jpg" /></p>
 <h3 id="layered-approach-to-uncovering-meaningful-information">Layered approach to uncovering meaningful information</h3>
-<p>More meaningful analysis can be done after the time line and authors of interest are found by employing a layered method of extracting information to the detail required by using the Dot Plot visualisation.</p>
-<p>For example, to uncover the risk level related to the Fire at Dancing Dolphin, i looked at three layers of information that the Dot Plot of Authors Messages provides:</p>
+<p>More meaningful analysis can be done after the timeline and authors of interest are found by employing a layered method of extracting information to the detail required by using the Dot Plot visualisation.</p>
+<p>For example, to uncover the risk level related to the Fire at Dancing Dolphin, I looked at three layers of information that the Dot Plot of Authors Messages provides:</p>
 <p><img src="Img/aut1.jpg" /></p>
 <p>At the top layer is the official call center <em>cc</em> transcripts which shows accurately the type and number of emergency vehicles dispatched. The information is not delayed but it is too brief and cannot be understood without context.</p>
-<p>We will add a mid layer information from one of the news source. Selecting between news source is done by using the pull down or by simply typing the name of the author. There are 6 news sources identified and usually the source with the highest counts provides more comprehensive information. The dot plot reflects the count on the y-axis so we can also identify the news source that is currently trending by judging from the steepness of the plot for that time period. News sources provides a good overview of the development. However their information can be slightly delayed and can also contain conflicting reports as the information is not from first hand.</p>
+<p>Add to it a mid layer information from one of the news sources. Selecting for a news source is done by using the pull down or by simply typing the name of the author. There are 6 news sources identified and usually the source with the highest counts provides more comprehensive information. The dot plot reflects the count on the y-axis so we can also identify the news source that is currently trending by judging from the steepness of the plot for that time period. News sources provides a good overview of the development. However their information can be slightly delayed and can also contain conflicting reports as the information is not from first hand.</p>
 <p>If there is a need to drill down the details, a bottom layer can be included by using either the network or wordpairs heatmap to identify key authors that are on the ground. For the Fire at Dancing Dolphin, we have identified <em>GreyCats Collectables</em> who lives at <em>Dancing Dolphin</em>. She shared many details in her tweets, but some tweets maybe irrelevant to the fire.</p>
 <h2 id="use-visual-analytics-to-represent-and-evaluate-how-the-level-of-the-risk-to-the-public-evolves-over-the-course-of-the-evening.-consider-the-potential-consequences-of-the-situation-and-the-number-of-people-who-could-be-affected.">Use visual analytics to represent and evaluate how the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected.</h2>
 <p>Heatmaps of wordpairs are indicative of how often the wordpair is mentioned in the 10 minnutes interval. In a social network, topics tend to trend and then die down fairly quickly. If there is a surge in the frequency of the wordpair again, we can expect it to be about a new development.</p>
-<p>The heatmap of wordpairs related to “crowds” shows that there there were concerns about violence at the start of the POK Rally, but about 20 minutes later, the fears of violence were unfounded as the trending words are “rally peaceful” and “peaceful tense”. The rally turned out to be peaceful as teh evening progressed due to a “strong police presence”.</p>
+<p>The heatmap of wordpairs related to “crowds” shows that there there were concerns about violence at the start of the POK Rally, but about 20 minutes later, the fears of violence were unfounded as the trending words are “rally peaceful” and “peaceful tense”. The rally turned out to be peaceful as the evening progressed with a “strong police presence”.</p>
 <p>The heatmap shows a resurgence of “crowd control”, which coincided with the end of the rally amd “peaceful tense” which coincided with the end of the police standoff.</p>
 <p><img src="Img/risk4.jpg" /></p>
-<p>From the Dot Plot of Messages by Authors, <em>AbilaPost</em> reported a crowd of 1200 attendees with “strong Police presence” at 17:26.</p>
+<p>From the Dot Plot of Messages by Authors, <em>AbilaPost</em> reported a crowd of 1200 attendees at the POK Rally with “strong Police presence” at 17:26.</p>
 <p><a href="Img/risk5.jpg"></a></p>
-<p>The heatmap of fire related wordpairs shows how the fire has continued to develop over the evening. There are two periods, 18:40 and 19:20, where the terms related to fire intensified before the top floor collapsed <img src="Img/heatmap2.jpg" /> The hashtags of fire related words shows 4 periods where the danger level increased.</p>
-<p>Period 1: Evacuation of residents of Dancing Dolphin. Rescue of trapped resident. Period 2: Expansion of evacuation perimeter to surrounding buildings Period 3: Firemen running away from building, top floor collapsed. Period 4: Explosion heard from inside of building, several people down.</p>
+<p>The heatmap of fire related wordpairs shows how the fire continued to develop over the evening. There are two periods, 18:40 and 19:20, where the terms related to fire intensified before the top floor collapsed.</p>
+<p><img src="Img/heatmap2.jpg" /></p>
+<p>The hashtags of fire related words shows 4 periods where the danger level increased.</p>
+<p>Period 1: Evacuation of residents of Dancing Dolphin. Rescue of trapped resident.</p>
+<p>Period 2: Expansion of evacuation perimeter to surrounding buildings.</p>
+<p>Period 3: Firemen running away from building, top floor collapsed.</p>
+<p>Period 4: Explosion heard coming from inside of building, several people down.</p>
 <p><img src="Img/hash6.jpg" /></p>
-<p>We learn from the firsthand account of <em>dangermice</em> that there was one person injured in the fire and also there are “lots of displaced people” as they have been evacuated. <img src="Img/risk6.jpg" /> The fire has continue to grow, affecting three groups of people:</p>
+<p>We learn from the firsthand account of <em>dangermice</em> that there was one person injured in the fire and also there are “lots of displaced people” as they have been evacuated. <img src="Img/risk6.jpg" /> As the fire continues to grow, three groups of people are affected:</p>
 <ol type="1">
-<li>Residents of Dancing Dolphin are homeless or injured due to smoke inhalation or burns. There is one women who was taken to the hospital as reported by <em>dangermice</em>. This group has lost their home to the fire. Many of them are close enough to watch to fire and could potentially be injured by the explosion that took place in period 4.</li>
+<li>Residents of Dancing Dolphin are homeless or injured due to smoke inhalation or burns. There is one women, <em>martaflores</em>, who was taken to the hospital as reported by <em>dangermice</em>. This group had lost their homes to the fire. Many of them are close enough to watch the fire and could potentially be injured by the explosion that took place in period 4.</li>
 </ol>
-<p><img src="Img/risk7.jpg" /> 2. Residents of surrounding buildings are homeless and some could also loose their home if the fire is not contained. Like the residents of Dancing Dolphin, they could be close enough to the explosion in period 4 to get injured. Due to the explosion, the evacuation area could be further expanded and this group of people could increase if the fire is not contained.</p>
-<ol start="3" type="1">
-<li>General public are inconvenienced by the road closures due to the evacuation.</li>
+<p><img src="Img/risk7.jpg" /></p>
+<ol start="2" type="1">
+<li><p>Residents of surrounding buildings are homeless and some could also lose their homes if the fire is not contained. Like the residents of Dancing Dolphin, they could be close enough to the explosion in period 4 to be injured. Due to the explosion, the evacuation area could be further expanded and this group of people could increase if the fire is not contained.</p></li>
+<li><p>General public are inconvenienced by the road closures due to the evacuation.</p></li>
 </ol>
-<p>The heatmap of the police standoff shows that there is a fading interest in the event as the wordpair frequencies shows a decrease over time.<br />
+<p>The heatmap of the Police Standoff shows that there is a fading interest in the event as the wordpair frequencies shows a decrease over time.<br />
 <img src="Img/risk8.jpg" /> First hand accounts by authors like <em>megaMan</em> and <em>truccotrucco</em> shows that the police were able to control the situation quite quickly. However the by-standers were not taking the standoff seriously.</p>
-<p><em>megaMan</em> tweeted that “groups of people running out of stores” and “People trying to leave in their cars - polic says no.” adding to the chaos of the moment and raising the risk level as the people in the black van are still armed. The AbilaPost reported “close to 200 people have gathered to watch standoff…” at 20:22:21. There was also a kid who was risking his life to take picture.</p>
+<p><em>megaMan</em> tweeted that “groups of people running out of stores” and “People trying to leave in their cars - police says no”, adding to the chaos of the moment and raising the risk level as the people in the black van are still armed. The AbilaPost reported “close to 200 people have gathered to watch standoff…” at 20:22:21. There was also a kid who was risking his life to take picture.</p>
 <p><img src="Img/risk9.jpg" /> There are three groups of people affected by the standoff and their risk level is different depending on their situation:</p>
 <ol type="1">
-<li><p>People trapped in the parking lot are potentially in the line of fire from the armed drivers. They had hid when they heard the shots and the Police had moved in to evacuate them. But like <em>megaMan</em> some would refuse tobe evacuated, exposing themselves to risk of getting shot.</p></li>
-<li><p>People who are trapped in the restaurants by the police. These are people like <em>truccotrucco</em> and <em>sofitee</em> and kept safe by the police. Unless they do something drastic like run out of the restaurant, they are safe. <img src="Img/risk10.jpg" /></p></li>
-<li><p>By-standers who came to watch the standoff are kept safe by the police who are controlling access to the area. But those who managed to sneak into the parking lot to view the standoff are exposing themselves to higher risks.</p></li>
+<li><p>People trapped in the parking lot are potentially in the line of fire from the armed drivers. They had hid when they heard the shots and the Police had moved in to evacuate them. But like <em>megaMan</em> some would refuse to be evacuated, exposing themselves to risk of getting shot.</p></li>
+<li><p>People who are trapped in the restaurants by the police. These are people like <em>truccotrucco</em> and <em>sofitee</em> are kept safe by the police. Unless they do something drastic like run out of the restaurant, they are safe.</p></li>
+</ol>
+<p><img src="Img/risk10.jpg" /></p>
+<ol start="3" type="1">
+<li>By-standers who came to watch the standoff are kept safe by the police who are controlling access to the area. But those who managed to sneak into the parking lot to view the standoff are exposing themselves to higher risks.</li>
 </ol>
 <h2 id="if-a-team-of-first-responders-could-be-sent-to-any-single-place-where-would-it-be-how-might-this-response-be-different-if-you-had-to-respond-to-the-events-in-real-time-rather-than-retrospectively">If a team of first responders could be sent to any single place, where would it be? How might this response be different if you had to respond to the events in real time rather than retrospectively?</h2>
-<p>As the fire poses a higher level of risk compared to the rally or standoff, the team of first responders could have been sent to the Dancing Dolphin appartment to control the fire before it escalates further.</p>
+<p>As the fire pose a higher level of risk compared to the rally or standoff, the team of first responders could be sent to the Dancing Dolphin apartment to control the fire before it escalates further.</p>
+<p>If the first responders were to be able to reach Dancing Dolphin before 18:47, they might have been able to prevent the Police Standoff and save the trapped resident earlier.</p>
+<p>Messages from <em>Simon_Hamaeth</em>, who was identified in our network graph as having high betweenness centrality, reveals that he was one of the hostages of the kidnapping.</p>
+<p><img src="Img/5.jpg" /></p>
+<p><em>prettyRain</em> was the other hostage and her tweets showed that she might be “Rachel” that <em>GreyCatCollectibles</em> was referring to in this tweet, “haven’t heard from rachel in days…”. At 18:47:38, she tweeted “This guy wants to make a beeak for it hes going to get us killed!”. That was around the start of the <em>Dancing Dolphin</em> fire, hence she might be referring to her kidnapper wanting to escape.</p>
+<p>At aroound the same time, messages by <em>GreyCatCollectibles</em> shows that the trapped resident was <em>martaflores</em>. At 18:42, she tweeted that she is in apartment 301 which was filling up with smoke. <em>HomelandIlluminations</em> reported that she was saved at 19:05:54.</p>
+<p><img src="Img/3.jpg" /></p>
+<p>Two fire trucks were dispatched at 18:42 and reached the scene at 18:47. If a team of first responders could have reached <em>Dancing Dolphin</em> earlier, them might have been able to meet the kidnappers in the black van and prevented the standoff.</p>
+<p>Trapped resident <em>martaflores</em> could also have been saved if the first responders were able to evacuate the residents from the building earlier.</p>
+<p>These deductions about the kidnappers are based on hindsight discovery as it is not possible to know that <em>prettyRain</em> and <em>Simon_Hamaeth</em> were kidnapped before the standoff.</p>
+<p>Overall, the fire poses a greater risk of affecting more people and property than the standoff. The standoff was also opposite Abila Park where there the POK Rally was ending and so the heavy police presence there could have been easily diverted to the standoff.</p>
+<p>Responding in real time, I would choose to send more fire trucks and police to the <em>Dancing Dolphin</em> once the fire was confirmed before the fire grows too big to be contained.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

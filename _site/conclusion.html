@@ -2375,7 +2375,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
-<a href="about.html">About</a>
 <a href="background.html">Background</a>
 <a href="methodology.html">Methodology</a>
 <a href="insights.html">Insights</a>
@@ -2403,8 +2402,115 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 </nav>
 </div>
-<h2 id="section"></h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="conclusions-and-comments">Conclusions and Comments</h2>
+<p>The methods most effective in quickly filtering the dataset for meaningful information are:</p>
+<ol type="1">
+<li><p>A network graph of RTs and mentions with out degree betweenness centrality to identify the key authors.</p></li>
+<li><p>A dot plot of RTs and mentions that allows for interactive filtering to read the selected text messages.</p></li>
+<li><p>A dot plot of hashtags that allows for interactive filtering to read the slected text messages grouped by hashtags.</p></li>
+</ol>
+<p>Indicators of risk levels:</p>
+<ol type="1">
+<li><p>Wordpair network with heatmap of wordpair frequency can show what are the trending wordpairs and phrases. Using wordpairs will give amuch better context than using single word tokens. Including RTs allows for the detection of trending wordpairs.</p></li>
+<li><p>Using a layered method to filter for information and extracting the text messages from it allows us to construct a better understanding of the situation.</p></li>
+</ol>
+<p>Some ways to further investigate this dataset could include using an integrated dashboard to put the various visualisations, like the wordpair network and heatmap plots together.</p>
+<h2 id="appendix">Appendix</h2>
+<p>Code for visNetwork graph with visPhysics</p>
+<pre><code>library(visNetwork)
+
+comb1_mentions3 &lt;- comb1_mentions2 %&gt;% 
+  mutate(mentions = str_remove(mentions, &quot;^\\@&quot;))
+
+author_unique &lt;- comb1_mentions3 %&gt;% 
+  select(author) %&gt;% 
+  distinct(author) %&gt;% 
+  rename(label = author)
+
+mentions_unique &lt;- comb1_mentions3 %&gt;% 
+  select(mentions) %&gt;% 
+  distinct(mentions) %&gt;% 
+  rename(label = mentions)
+
+nodes &lt;- full_join(author_unique, mentions_unique, by = &quot;label&quot;) %&gt;% 
+  arrange(label)
+
+nodes &lt;- nodes %&gt;% 
+  rowid_to_column(&quot;id&quot;) %&gt;% 
+  mutate(group = if_else(label == &quot;AbilaPost&quot; |
+                           label == &quot;KronosStar&quot; | 
+                           label == &quot;CentralBulletin&quot; | 
+                           label == &quot;InternationalNews&quot;| 
+                           label == &quot;NewsOnlineToday&quot;, &quot;news&quot;, 
+                         if_else(label == &quot;AbilaFireDept&quot; |
+                                   label ==&quot;AbilaPoliceDepartment&quot;, 
+                                 &quot;official&quot; , 
+                                 if_else(label == &quot;truccotrucco&quot;| 
+                                           label == &quot;megaMan&quot;|
+                                          label==&quot;HomelandIlluminations&quot;,
+                                         &quot;interest&quot;,  
+                                         &quot;others&quot;)
+                                 )
+                         )
+         )
+
+edge &lt;- comb1_mentions3 %&gt;% select(author, mentions, Text)
+
+edges &lt;- edge %&gt;% 
+  left_join(nodes, by = c(&quot;mentions&quot; = &quot;label&quot;)) %&gt;% 
+  rename(from = id)
+
+edges &lt;- edges %&gt;% 
+  left_join(nodes, by = c(&quot;author&quot; = &quot;label&quot;)) %&gt;% 
+  rename(to = id) %&gt;% 
+  rename(title = Text)
+
+edges &lt;- select(edges, from, to,title) %&gt;% 
+  group_by(from) %&gt;% 
+  add_tally() %&gt;% 
+  ungroup() 
+
+nodes &lt;- nodes %&gt;% 
+  left_join(select(edges, n, from), by = c(&quot;id&quot; = &quot;from&quot;)) %&gt;% 
+  distinct(id, label, group, n) %&gt;% 
+  rename(value = n) 
+
+#%&gt;% mutate(shape =&quot;dot&quot;)
+
+legend_nodes &lt;- data.frame(label = unique(nodes$group))
+
+visNetwork(nodes, edges, 
+           main = &quot;Network of Mentions&quot;, 
+           height = &quot;500px&quot;, width = &quot;100%&quot;) %&gt;% 
+  visEdges(arrows = &quot;top&quot;)%&gt;%  
+  visInteraction(dragNodes = TRUE, 
+                 dragView = TRUE, 
+                 zoomView = TRUE, 
+                 multiselect = TRUE,
+                 navigationButtons = TRUE, 
+                 tooltipStyle = &#39;position: fixed;
+                 visibility:hidden;
+                 padding: 5px;
+                 white-space: wrap; 
+                 font-family:cursive;
+                 font-size:12px;
+                 font-color:purple;
+                 background-color: blue;&#39;) %&gt;% 
+  visNodes( labelHighlightBold = TRUE, 
+            font = list(size=30), shape=&quot;box&quot;) %&gt;% 
+  visOptions(highlightNearest = list(enabled = TRUE, 
+                                     hover = FALSE, 
+                                     algorithm = &quot;hierarchical&quot;),
+             nodesIdSelection = list(enabled = TRUE, 
+                                     main = &quot;Mentioned&quot;),
+             selectedBy = list(variable=&quot;group&quot;, main=&quot;Type&quot;))  %&gt;%
+  visLegend(width=0.2, position=&quot;right&quot;, 
+            zoom=FALSE, useGroups = TRUE) %&gt;% 
+  visPhysics(stabilization=FALSE, 
+             solver=&quot;forceAtlas2Based&quot;, 
+             forceAtlas2Based = list(gravitationalConstant=-100)
+             )</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

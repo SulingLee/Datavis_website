@@ -8,8 +8,6 @@ navbar:
   right:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
     - text: "Background"
       href: background.html
     - text: "Methodology"
