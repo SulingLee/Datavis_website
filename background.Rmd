@@ -72,7 +72,8 @@ The challenge is to use visual analytics to extract important information from t
 * What distinguishes meaningful event reports from typical chatter from junk or spam?   
 
 * Use visual analytics to represent and evaluate how the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected.   
-If a team of first responders could be sent to any single place, where would it be? How might this response be different if you had to respond to the events in real time rather than retrospectively?   
+
+* If a team of first responders could be sent to any single place, where would it be? How might this response be different if you had to respond to the events in real time rather than retrospectively?   
 
 This project will also document the building of suitable interactive visualisations in R to aid the analysis of the data.   
 

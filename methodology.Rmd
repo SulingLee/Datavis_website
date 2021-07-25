@@ -1,5 +1,5 @@
 ---
-title: "Methodology and Exploratory Data Analysis"
+title: "Application Design and Exploratory Data Analysis"
 toc: true
 ---
 
@@ -490,7 +490,7 @@ comb1_hashtag2 <- comb1 %>%
   mutate(hashtags = str_extract_all(Text, "#\\S+")) %>% 
   unnest(hashtags)%>% 
   group_by(hashtags) %>% 
-  add_tally() %>% 
+  mutate(n = row_number(hashtags)) %>% #add_tally() %>% 
   ungroup() %>% 
   arrange(time)
 ```
@@ -546,9 +546,9 @@ However, using that time found from that tweet by *megaMan* at 19:39:40 to narro
 The first tweet about a car accident was at 19:19:00. Subsequently, I found all messages with the hashtag *#APD* were about the sequence of events for the hit and run at round 19:16 to 19:41.  
 
 ![](Img/hash5.jpg) 
-The tweets following the hit and run reveal that Event D follows from Event C, as *megaMan* witnessed the people in the black van facing off with the police pursuing them.  
+The tweets following the hit and run reveal that Event D follows from Event C, as *megaMan* witnessed the people in the black van facing off with the police pursuing them. 
 
-Shifting the filter period earlier, there was a hashtag #jerkdrivers about a black van hitting a car, then a bicycle before driving into  parking lot. Hence Events C and D describes the sequence of events of the black van. 
+Shifting the filter period earlier, there was a hashtag #jerkdrivers about a black van hitting a car, then a bicycle before driving into  parking lot. Since Events C and D describes the sequence of events of the black van and I will group them as one event called Police standoff.
 
 Filtering for hashtags is a good way to get more details about each event. 
 
@@ -657,7 +657,7 @@ bscols(widths =c(12,12),
 ```
 Filtering for the phrases found in the workpair network, we have a heat map of each event. 
 
-For example, we see that Event C was very short but generated a lot of tweets as compared to the stand-off. The heatmap was also useful in visualising the speakers identified by the workpair network and shows the time they took the stage at the POK rally. 
+For example, we see that the hot and run was very short but generated a lot of tweets as compared to the stand-off. The heatmap was also useful in visualising the speakers identified by the workpair network and shows the time they took the stage at the POK rally. 
 
 ![](Img/heatmap1.jpg)  
 
@@ -776,9 +776,33 @@ bscols(widths =c(12,12),
          add_markers() 
        )
 ```
+
+
+Three major events have been identified: the POK Rally (Event A), Fire (Event B) and Police Stand-off (Events C and D). As the POK Rally ended peacefully, I will focus on the Fire and Police Stand-off when assessing the risk and safety of the affected residents during these events.  
+
+Some keys authors have been earlier identfied to be involved in the Fire and Police Stand-off. Filtering for their tweets will allow us to get a better assessment of what is happening on the ground.
+
+![](Img/aut1.jpg) 
+
+
+*GreyCatCollectibles* was identified earier as a possibly the first one who tweeted about the fire. Filtering for this author shows that *dancing dolphin* had been undergoing some renovations for some weeks. *GreyCatCollectibles* was also the one who called 555 at 18:38, and at 18:40 there was a call centre report of "Possible fire". Her tweets details how the fire has not been contained after 19:10 as she tweeted that, "My doll collection.. ... #allruined" indicating that the fire has consumed them. She was also within sight of the building at this time. 
+Another indiction that the risk level has increase is when *ccdata* and *HomelandIllumninations* reported that extra fire units were dispatched and the residents were further evacuated from the burning building at around 19:25. Also later at 20:35 where *GreyCatCollectibles* tweeted,"oh my oh my oh my. Everything is gone!" indicating this might be the time where the top floor collapsed.  
+
+```{r}
+comb1_authors2 %>% filter(author == "GreyCatCollectibles") %>% dplyr::select(Text, time)
 ```
 
 
+![](Img/stand.jpg)  
+Authors previously identified to be in the Police Standoff are *megaMan*, *truccotrucco* and *sofitees*. *megaMan* was caught in the parking lot during the stand-off and tweets that the police stopped the back van from leaving the parking lot, causing the "black van faces off two cops, shots fired, people undercover, not moving until its under control." at 19:41:07 and later "don't think anyone ran for it, they didn't have time before police pulled in" at 19:41:45. These people were caught during the cross fire between the people in the black van and the police and were exposed to high risk of being accidentally shot during the stand-off. 
+One policeman was reported to have been shot then and send by ambulance to the hospital. 
+By 19:43, there were no more shooting and *AbilaPost* reported that the police had started to evacuate people from the scene. 
+At 20:01, *megaMan* tweet that "I'm just seeing someone talking to van guys" signalling the start of the negotiations.  
+At about the same time, he also tweeted that there were "groups of people running out of stores" and "People trying to leave in their cars - polic says no." adding to the chaos of the moment and raising the risk level as the people in the black van are still armed. 
+The AbilaPost reported "close to 200 people have gathered to watch standoff..." at 20:22:21. 
 
+```{r}
 
+comb1_authors2 %>% filter(author == "megaMan") %>% dplyr::select(Text, time)
+```
 
