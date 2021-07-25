@@ -11,11 +11,11 @@ knitr::opts_chunk$set(fig.retina = 3,echo = TRUE, eval = TRUE, warning = FALSE, 
 
 After exploring the network graphs, the nodes were grouped as follows: 
 
-* News: "AbilaPost", "KronosStar","CentralBulletin", "InternationalNews", "NewsOnlineToday"
+* News: "AbilaPost", "KronosStar","CentralBulletin", "HomelandIlluminations", "InternationalNews", "NewsOnlineToday"
 
 * Official: "AbilaFireDept", "AbilaPoliceDepartment"
 
-* Interest: "truccotrucco", "megaMan", "ben", "Simon_Hamaeth", "sofitees", "hngohebo_ABILAPOST", "HomelandIlluminations"
+* Interest: "truccotrucco", "megaMan", "ben", "Simon_Hamaeth", "sofitees", "hngohebo_ABILAPOST", 
 
 * Others: the rest 
 
@@ -34,3 +34,17 @@ D.	A standoff with the police at a parking lot near Alexandrias and Ithakis
 RTs with mentions are more informative than non-RT tweets, especially if the author is a credible source or popular authority in the social network, like the news.
 
 In our interactive dot plot for mentions, there is a checkbox to filter messages based on whether they are RTs.   
+
+
+
+
+
+The analysis shows that filtering for *#hashtags* is an effective method of building a understanding of the sequence of events. However, the user must be able to pick out the relevant hashtag keywords from the dropdown list and do some further filtering by time to narrow down the search.    
+
+
+Visualising wordpairs in a heatmap allows for quick identification of trending key terms, but like the wordpair network, users need to be very selective in exploring the choosing the relevant wordpairs to represent the events. 
+
+
+
+
+

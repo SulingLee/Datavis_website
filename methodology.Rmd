@@ -30,8 +30,14 @@ packages = c('tidyverse',
              'VIM', #visualise missing values
              'patchwork', #combination plots
              'tidygraph', #tidy graph manipulation
-             'ggraph',  #graphing network
-             'visNetwork'  #graphing interactive networks
+             'igraph', #graphing networks
+             'ggraph',  #graphing networks
+             'visNetwork',  #graphing interactive networks
+             'tm', #text analysis
+             'tidytext', #text analysis,
+             'raster', #geospatial map
+             'sf', #nap shape layer
+             'tmap' #plot map
              )
 for(p in packages) {
   if(!require(p,character.only = T)){
@@ -47,7 +53,9 @@ The three csv files have the same structure and column headers, *read_csv* is us
 
 ```{r}
 df_list <- list.files(path = "./New/",pattern=".csv", full.names = TRUE)
-comb <- df_list %>% set_names() %>% map_dfr(read_csv, .id = "source")
+comb <- df_list %>% 
+  set_names() %>%
+  map_dfr(read_csv, .id = "source")
 ```
 
 The datetime column is a string of digits,  yyyyMMddHHmmss, *gsub* is used to split and insert the separators so that the string is now in the form * "d/m/Y H:M:S". Next, *as.Date* is used to change the format to *date time* and to further extract the time component. *as_hms* from the [hms](https://www.rdocumentation.org/packages/hms/versions/1.1.0) package is used to convert it into a *time* format.   
@@ -73,7 +81,7 @@ comb <- as_tibble(comb) %>% mutate_if(is.character, function(col) iconv(col, to=
 The filenames in *source* are quite long, so they are renamed as *”Part1”*, *”Part2”* and *”Part3”* respectively. I also renamed *message* to *text* for better comprehension.  
 
 ```{r}
-comb1 <- comb %>% select(-`date(yyyyMMddHHmmss)`)%>% 
+comb1 <- comb %>% dplyr::select(-`date(yyyyMMddHHmmss)`)%>% 
   dplyr::rename(Text = message) %>% 
   mutate(source = recode(source, 
                          `./New/csv-1700-1830.csv`="Part1",
@@ -162,12 +170,12 @@ p
 Filtering for only *Number of Tweets* and *Number of Hashtags* by clicking on the legend, we see that there are two authors, *KronosQuoth* and *Clevvah4Evah*, who had posted huge number of tweets and hashtags. *Clevvah4Evah* sent an average of 4.7 tweets per minute with an average of 2 hashtags per text message. While *Clevvah4Evah* sent an average of 0.6 tweets per minute with an average of 3 hashtags per text message. From *tooltip*, we find that these two authors do not have any mentions or RTs, hence they look very suspicious and further exploration will be done to check if they are indeed authors posting authentic text or just spam bots.   
 
 ```{r}
-comb1 %>% filter(author == "KronosQuoth") %>% select(Text)
+comb1 %>% dplyr::filter(author == "KronosQuoth") %>% dplyr::select(Text)
 ```
 Tweets by *KronosQuoth* are composed of pseudo-sayings with several duplicated messages. They are mostly appended with *#POKRally* and *#HI* but the content is unrelated to the rally.   
 
 ```{r}
-comb1 %>% filter(author == "Clevvah4Evah") %>% select(Text)
+comb1 %>% dplyr::filter(author == "Clevvah4Evah") %>% dplyr::select(Text)
 ```
 Tweets by *Clevvah4Evah* are random statements that also contains several duplicated messages. They are mostly appended with *#POK* , *#Rally* and *#Grammar* but once again, the content is unrelated to the rally. We will drop these two authors from subsequent analysis as they are not meaningful.   
 
@@ -196,12 +204,12 @@ For the node set, I extracted the set of unique authors from the *author* column
 
 ```{r}
 author_unique <- comb1_mentions3 %>% 
-  select(author) %>% 
+  dplyr::select(author) %>% 
   distinct(author) %>% 
   rename(label = author)
 
 mentions_unique <- comb1_mentions3 %>% 
-  select(mentions) %>% 
+  dplyr::select(mentions) %>% 
   distinct(mentions) %>% 
   rename(label = mentions)
 
@@ -219,6 +227,7 @@ nodes <- nodes %>%
   mutate(group = if_else(label == "AbilaPost" | 
                            label == "KronosStar" | 
                            label == "CentralBulletin" | 
+                           label == "HomelandIlluminations" |
                            label == "InternationalNews"| 
                            label == "NewsOnlineToday", "news", 
                          if_else(label == "AbilaFireDept" |
@@ -229,8 +238,7 @@ nodes <- nodes %>%
                                            label == "ben" | 
                                            label == "Simon_Hamaeth"| 
                                            label == "sofitees" | 
-                                           label == "hngohebo_ABILAPOST" |
-                                      label=="HomelandIlluminations",
+                                           label == "hngohebo_ABILAPOST",
                                       "interest",  
                                       "others")
                                  )
@@ -242,7 +250,7 @@ Next, I create the edge set by using *select* to extract the required columns. E
 
 
 ```{r}
-edge <- comb1_mentions3 %>% select(author, mentions, Text)
+edge <- comb1_mentions3 %>% dplyr::select(author, mentions, Text)
 ```   
 
 Obtain the id of the "from" and "to" nodes using *left_join* with the node set.  
@@ -260,7 +268,7 @@ edges <- edges %>%
 Use *add_tally* to obtain the degree of each *mention* node to be used as the weight.  
 
 ```{r}
-edges <- select(edges, from, to,title) %>% 
+edges <- dplyr::select(edges, from, to,title) %>% 
   group_by(from) %>% 
   add_tally() %>% 
   ungroup() 
@@ -270,7 +278,7 @@ Add the weight, *n*, to the node set.
 
 ```{r}
 nodes <- nodes %>% 
-  left_join(select(edges, n, from), by = c("id" = "from")) %>% 
+  left_join(dplyr::select(edges, n, from), by = c("id" = "from")) %>% 
   distinct(id, label, group, n) %>%  
   rename(value = n)  
 ```
@@ -370,10 +378,10 @@ When creating the network and testing the layout options, I found that *visPhysi
 
 ![](Img/visPhy.jpg)   
 
-From the network graph, I first locate the nodes identified with high degree centrality scores. By hovering on their links to read some of their tweets, I discovered the outgoing links of the top nodes are retweets of informative news reports. Hence, I grouped *AbilaPost*, *KronosStar*, *CentralBulletin*, *InternationalNews*, *NewsOnlineToday* as *news*.   
+From the network graph, I first locate the nodes identified with high degree centrality scores. By hovering on their links to read some of their tweets, I discovered the outgoing links of the top nodes are retweets of informative news reports. Hence, I grouped *AbilaPost*, *KronosStar*, *CentralBulletin*,*HomelandIlluminations*, *InternationalNews*, *NewsOnlineToday* as *news*.   
 
 ![](Img/net_news.jpg)   
-Other authors with high degree centrality are *HomelandIlluminations*, *megaMan*, *truccotrucco* and *ben*. *HomelandIlluminations* is a very informative source, giving updates about a fire at *Dancing Dolphin* and the evacuation of residents. Furthermore, a possible hit-and-run, police stand-off, SWAT team and hostage scene were also mentioned.   
+Other authors with high degree centrality are *megaMan*, *truccotrucco* and *ben*.  
 
 ![](Img/HI.jpg)   
 
@@ -388,11 +396,11 @@ Finally, *hngohebo_ABILAPOST* posted one text message and retweeted another. Bot
 ![](Img/hngohebo.jpg)  
 After exploring the network graphs, the nodes were grouped as follows: 
 
-* News: "AbilaPost", "KronosStar","CentralBulletin", "InternationalNews", "NewsOnlineToday"
+* News: "AbilaPost", "KronosStar","CentralBulletin", "HomelandIlluminations", "InternationalNews", "NewsOnlineToday"
 
 * Official: "AbilaFireDept", "AbilaPoliceDepartment"
 
-* Interest: "truccotrucco", "megaMan", "ben", "Simon_Hamaeth", "sofitees", "hngohebo_ABILAPOST", "HomelandIlluminations"
+* Interest: "truccotrucco", "megaMan", "ben", "Simon_Hamaeth", "sofitees", "hngohebo_ABILAPOST"
 
 * Others: the rest 
 
@@ -440,10 +448,337 @@ bscols(widths =c(12,12),
 )
 ```
 
-Filtering for all the news groups and *HomelandIlluminations*, laid out the events of the evening in chronological order.  
-For example, *HomelandIlluminations* was the first to report the fire at Achilleos & Madeg. Later that evening, *KronosStar* described an “erratic driver who ran a red light” at around the same time that *HomelandIlluminations* reported a hit and run. *KronosStar* subsequently reported that the driver was being cornered by the police in a parking lot near Alexandrias and Ithakis and later shots were fired. This led to APD units sent to the shooting area. And later *AbilaPost* reported that the stand off ends peacefully.   
+Filtering for all the news groups gave us the events of the evening in chronological order.  
 
-![](Img/RT_HI.jpg)  
+![](Img/men_events.jpg)   
+
+For example, *HomelandIlluminations* was the first to report the fire at Achilleos & Madeg. Later that evening, *KronosStar* described an “erratic driver who ran a red light” at around the same time that *HomelandIlluminations* reported a hit and run. *KronosStar* subsequently reported that a driver was being cornered by the police in a parking lot near Alexandrias and Ithakis and later shots were fired. This led to APD units sent to the shooting area. And later *AbilaPost* reported that the stand off ends peacefully.   
+
+![](Img/RT_HI.jpg)   
+
+The text messages from the *news group* are extracted and further filtered to get a summary of the events. 
+
+```{r}
+news_group <- c("@AbilaPost", "@KronosStar","@CentralBulletin", "@InternationalNews", "@NewsOnlineToday", "@HomelandIlluminations")
+
+news <- comb1_mentions2 %>% dplyr::filter(mentions %in% news_group) %>% dplyr::select(Text, time, mentions) %>% arrange(time) %>% distinct(Text, time) 
+
+glimpse(news)
+```
+### Summary of Events from RTs and Mentions
+
+![](Img/mentions1.jpg)  
+![](Img/mentions2.jpg)  
+
+However this information is not without some discrepancy. For example, the fire was announced to be in control by several news sources at around 20:29 onwards.  
+![](Img/mentions3.jpg) 
+But shortly after, the top floor collasped. Further tweets that the fire is controlled and the neighbour buildings are not at risk conflicted with other tweets about the fire fights moving to fight the fire from outside the building only. 
+
+Filtering for top RTs and mentions from the news sources has given us a useful blunt filter to uncover the event timeline, location and some further details. However there are still some missing gaps and conflicting reports. For instance could the "erratic" driver mentioned in the hot and run be the same one that was in the stand-off? Also could the residents at *dancing dolphin* shed more light into the actual progress of the fire? 
+
+## Dot Plot of Hashtags
+
+I will investigate hashtags next to see if tapping on the “wisdom of the crowd” to identify keywords through hashtags can lead to identification of meaningful tweets.   
+
+Another an interactive dot plot, like the one created for mention will be used to visualise the tweets in chronological order. I start by filtering away authors "KronosQuoth", "Clevvah4Evah" & "trollingsnark". Next, I extracted all the hashtags and count by hashtags as before.   
+
+```{r}
+comb1_hashtag2 <- comb1 %>% 
+  filter(author != "KronosQuoth" & 
+           author != "Clevvah4Evah" & 
+           author != "trollingsnark")%>% 
+  mutate(hashtags = str_extract_all(Text, "#\\S+")) %>% 
+  unnest(hashtags)%>% 
+  group_by(hashtags) %>% 
+  add_tally() %>% 
+  ungroup() %>% 
+  arrange(time)
+```
+
+As before, *plot_ly* and *crosstalk* were used to create the interactive plot. The layout and colour were kept as close to the previous chart as possible so that the user is already familiar with the interface and control options.   
+
+```{r}
+hx <- highlight_key(comb1_hashtag2)
+widgets <- bscols(
+  widths = c(3, 6, 3),
+  filter_checkbox("source", "Time Period", hx, ~source, inline = TRUE),
+  filter_select("hashtags","Hashtags",hx,~hashtags),
+  filter_checkbox("RT", "RT", hx, ~is_RT, inline = TRUE)
+)
+
+bscols(widths =c(12,12), 
+       widgets, 
+       plot_ly(hx, x = ~time, y=~n, 
+               showlegend = FALSE, 
+               color = ~factor(hashtags) , 
+               hoverinfo ='text', 
+               text=~paste(Text, "</br></br>By ",author, " at ", time)) %>% 
+         layout(title = "Hashtags Through the Evening", 
+                xaxis = list(title = "Time Slider",
+                             rangeslider = list(bgcolor = "#f0f8ff" ,
+                                                type = "time"),
+                             categoryarray= ~time, 
+                             yaxis = list(title = "Number of Hashtags"),
+                             categoryorder= 'array'))%>% 
+         add_markers() 
+       )
+```
+
+For each event identified, I will pick out the associated hashtags and further examined the text messages.   
+
+Using the hashtags with words related to “fire”: 
+
+![](Img/hashfire.jpg) 
+
+The top three hashtags provided detailed information about how the fire could have started: "#AFD breaking scandal: setting fires in rundown neighborhoods for training exercises, accidental urban renewal" at 18:34, also details about the fire trucks sent and how the situation is progressing. 
+
+Hashtags with low counts are mainly prsonal stories by the residents or related comments. There is a small amount of irrelavent tweets as "fire" is a common word used in hashtags.  
+
+Exploring these showed that @GreyCatCollectibles tweeted "really smells like smoke now" at 18:35 that could have been about the fire. There were also tweets from paramedics and firefighters called to duty and some tweets from driver about traffic jam caused by closing the area from the fire. 
+
+Using the hashtags *#almostcreamedbyvan, #blackvan, #blackvanrules, #cycling*, only one relevant message found *#almostcreamedbyvan* appeared at the time of the hit and run. 
+
+![](Img/hash3.jpg) 
+However, using that time found from that tweet by *megaMan* at 19:39:40 to narrow down the search produced several tweets that revealed the sequence of events of the hit and run.   
+
+![](Img/hash4.jpg) 
+
+The first tweet about a car accident was at 19:19:00. Subsequently, I found all messages with the hashtag *#APD* were about the sequence of events for the hit and run at round 19:16 to 19:41.  
+
+![](Img/hash5.jpg) 
+The tweets following the hit and run reveal that Event D follows from Event C, as *megaMan* witnessed the people in the black van facing off with the police pursuing them.  
+
+Shifting the filter period earlier, there was a hashtag #jerkdrivers about a black van hitting a car, then a bicycle before driving into  parking lot. Hence Events C and D describes the sequence of events of the black van. 
+
+Filtering for hashtags is a good way to get more details about each event. 
+
+## WordPair Network with Heatmap Analysis
+
+Next, I turned to investigate what I can uncover from all the mbdata text messages. Since the dataset is lareg, looking at common words is another method of mining text for information. I chose to use a wordpair (bigram) for my analysis as it can provide a bit more context and meaning. Colloquial terms are usually used in short messages like tweets to convey meaning plainly so I choose not to further employ stemming and lemmatisation.   
+
+The [tidytext]( https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html) and [tm]( https://www.rdocumentation.org/packages/tm/versions/0.7-8) packages were used for the text analysis.   
+
+Some further preparation was necessary to prepare the *mbdata* for analysis. *str_replace_all* was used to remove all *hashtags* and mentions* from the text messages. However, I choose to keep retweet messages, only dropping the *RT* at the start of each message. The text messages were then processed to remove stop words and converted to lower case.   
+
+```{r}
+comb1_clean <- comb1 %>% 
+  filter(author != "KronosQuoth" & author != "Clevvah4Evah" & author != "trollingsnark") %>%
+  filter(type == "mbdata") %>% 
+  mutate(Text = str_replace_all(Text, "^RT |@\\S+|#\\S+|\\S+\\.\\S+\\/\\S+", "")) %>% 
+  mutate(Text = removeWords(Text, stop_words$word)) %>% 
+  mutate(Text = tolower(Text))
+```
+The *unnest_tokens* creates the bigrams and *group_by* and *add-tally* were used to count the frequency of the wordpairs. After some rearrangement of the order of the columns, I split the wordpair into their individual word *w1* and *w2* using *separate*. I added a *count* of the frequency of the words to be used as weights in the graph.    
+
+```{r}
+comb1_wordpair <- comb1_clean %>% 
+  unnest_tokens(wordpair, Text,token = "ngrams", n=2) %>% 
+  group_by(wordpair) %>% 
+  add_tally() %>% 
+  ungroup() %>% 
+  arrange(desc(n)) %>% 
+  relocate(n, .before = source) %>% 
+  relocate(wordpair, .before = n)
+
+comb1_wordpair_separatepair <- comb1_wordpair %>% 
+  separate(wordpair, c("w1","w2"), sep = " ") %>% 
+  count(w1, w2, sort = TRUE)
+
+glimpse(comb1_wordpair_separatepair)
+```
+A network graph was created to display the wordpairs as a graph is better able to the relationship between the wordpairs. The [igraph]( https://igraph.org/r/) package is used as only a static graph is required. To create an arrow on the plot, I used the [grid]( https://www.rdocumentation.org/packages/grid/versions/3.6.2) package. 
+Next, I graphed the wordpairs with frequency of at least 10 using the *Fruchterman and Reingold, FR* layout. This layout tends to spread the nodes out with the nodes of higher degrees placed closer to the centre of the graph. I set the edge width and colour to reflect the frequency of the wordpair and used colour to make the nodes standout from the edges.   
+
+```{r}
+a <- grid::arrow(type = "closed", length = unit(5, 'mm'))
+
+comb1_wordpair_separatepair %>%
+  filter(n >= 10) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n, edge_width = n, colour = "lightgrey"), 
+                 show.legend = FALSE, arrow = a) +
+  geom_node_point(color = "darkslategray4", size = 3) +
+  geom_node_text(aes(label = name), vjust = 1.8, size = 3) +
+  labs(title = "Word Network using bigram",
+       x = "", y = "")
+```
+
+The network graph joined the wordpairs with the word together forming phrases naturally. Using [TF-idf]( https://en.wikipedia.org/wiki/Tf%E2%80%93idf) did not provide any noticeable difference for just using term frequency as weight, so network was created based on term frequency.  
+The arrows tell us the direction of the join. For example, we will read from the direction of the arrows, “professor lorenzo di stafano” and “black van guy/ guys”.  
+
+There are two large clusters one about the *dancing dolphin fire* and the other about *abila police*. Other high frequency wordpairs are about the *pok rally*. We can also see that there are some junk phrases that had not been previously detected by our methods, like “how credit rating need boost”.   
+
+The network graph also joined the names of key figures. For example we have: “pok leader sylvia marek”, “special guest dr newman”, “audrey mcconnell”, “professor lorenzo di stefano”, “speaking lucio jakab”, “band viktor e playing”. We also learn that “alexandrias ithakis” is not a person due to the phrase “intersection alexandrias ithakis corner”, and “schaber” is also referring to a location.  
+
+I will use a heatmap to visualise the word pairs to find out which phrases are related together, for example whether “trapped residents” refers to *dancing dolphin* or *gelato galore* or not. Wordpairs about the same event should occur at around the same time so judging by the frequency of words (the colour of the heatmap) will allow me to tell which phrases are referring to which event.  
+
+First reconstruct the wordpairs.
+
+```{r}
+
+filter_words <- comb1_wordpair_separatepair %>% mutate(wordpair = paste(w1, w2)) 
+filter_words <- filter_words[-c(2),] 
+filter_words1 <- filter_words %>% filter(n >= 10)
+
+```
+
+The *time* continuous variable is converted into 10 minute intervals using *strftime*. Next, I *count* the frequency of wordpairs for each interval to use to colour the heatmap. The higher the frequency of the word pair in that interval, the darker it will appear on the heatmap.  
+
+```{r}
+comb1_wordpair2 <- comb1_wordpair %>% 
+  mutate(by10 = cut(datetime, "10 min")) %>% 
+  dplyr::count(by10, wordpair, sort= TRUE) %>% 
+  mutate(time10 = strftime(by10, "%H:%M"))%>% 
+  filter(wordpair %in% filter_words1$wordpair) %>% 
+  arrange(wordpair)
+```
+
+As there we found many phrase from wordpair network graph, *plotly* and *crosstalk* were used to allow users to select for the wordpairs that they want to examine.  
+
+
+```{r}
+ah <- highlight_key(comb1_wordpair2)
+widgets <- bscols(
+  filter_select("Wordpair","Select Wordpairs",ah,~wordpair)
+)
+
+bscols(widths =c(12,12), 
+       widgets, 
+       plot_ly(ah, x = ~time10, y=~wordpair, z = ~n, 
+               type = "heatmap", 
+               hoverinfo ='text', 
+               hovertext=~paste(wordpair, time10), 
+               height = 800, 
+               colorscale = "Purples", 
+               colorbar = list(title = "Frequency")) ) %>% 
+  highlight(on = "plotly_hover")
+
+```
+Filtering for the phrases found in the workpair network, we have a heat map of each event. 
+
+For example, we see that Event C was very short but generated a lot of tweets as compared to the stand-off. The heatmap was also useful in visualising the speakers identified by the workpair network and shows the time they took the stage at the POK rally. 
+
+![](Img/heatmap1.jpg)  
+
+Focusing on the phrases related to the fire, we can get an approximate time of when the fire intensified and when the residents were evacuated. From the heatmap, there seem to be two periods, 18:40 and 19:20, where the fire intensified before the top floor collapsed. 
+
+![](Img/heatmap2.jpg)  
+
+Pairing the wordpair network with a heatmap allows for a quicker identification of the phrases related to each event as it provides a better context to the words as compaed to just using a unigram. The heatmap is also a good visual representation of the "trending" term, indicating the time where there is a new development or when an emergency has intensified. However, but like the wordpair network, users need to be very selective in exploring the choosing the relevant wordpairs to represent the events. 
+
+## Geospatial Map 
+
+The mbdata contains a few GPS latitude and longitude information. To create a geospatial map, the [raster]( https://cran.r-project.org/web/packages/raster/index.html) , [sf]( https://cran.r-project.org/web/packages/sf/index.html)  and [tmap]( https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)  packages will be used.    
+
+I begin by importing a georeferenced image in the *tif* file format using *raster*. Note that the file consists of three bands which needs to be combined together to create one complete image.  
+
+```{r}
+bgmap <- raster("./Geospatial/Abila.tif")
+bgmap
+```
+
+Using *tm_shape* to create the background layer using the rasterised file and *tm_rgb* to combine the layers, we have rendered the map. *tmaps* has some in-built interactivity like zoom, pan and hover which make the map more readable.   
+
+```{r}
+tm_shape(bgmap)+
+tm_rgb(bgmap, r =1, g=2,b=3,
+         alpha = NA,
+         saturation = 1,
+         interpolate = TRUE,
+         max.value = 255)
+```
+
+Next, I will be filtered for mbdata that have latitude and longitude information and use *st_as_sf* to convert these columns into a simple feature data frame. As the coordinates are in the EPSG: 4326 format, I used *crs = 4326*. A simple bar chart plot of authors by count shows that we have only 8 authors with gps coordinates.  Interestingly, *truccotrucco* who was identified earlier as a witness of the *gelatogalore* police standoff with the black van is top in terms of GPS information. It will be interesting to find out where he was during the evening.   
+
+```{r}
+comb_mb <- comb1 %>% 
+  filter(type == "mbdata") %>% 
+  filter(latitude != 'NA' & longitude != 'NA')
+
+comb_mb_sf <- st_as_sf(comb_mb, coords = c("longitude","latitude"), crs = 4326)
+
+comb_mb %>% group_by(author) %>% 
+  count(author) %>% 
+  ungroup() %>% 
+  mutate(author2 = fct_reorder(author,n)) %>% 
+  ggplot(aes(x=author2, y = n, fill = author)) +
+  geom_col(show.legend = FALSE) + coord_flip() + 
+  labs(title = "mbdata Authors with GPS", x = "Authors", y = "Count")
+```
+
+To plot their locations, I first grouped up all the authors then *st_cast* the dataframe into *LINESTRING*, which is a line connecting the sequence of points based on the GPS coordinates. 
+*tmap* is use to plot their paths by creating a *tm_shape* based on the background map and overlaying the paths.   
+
+```{r}
+comb_mb_path <- comb_mb_sf %>% 
+  group_by(author) %>% 
+  summarize(m = mean(time), do_union= FALSE) %>% 
+  st_cast("LINESTRING")
+
+tmap_mode("view")
+tm_shape(bgmap) + 
+  tm_rgb(bgmap, r=1, g=2, b=3, 
+         alpha = NA, 
+         saturation = 1, 
+         interpolate = TRUE, 
+         max.value = 255) + 
+  tm_shape(comb_mb_path) + 
+  tm_lines(col = "author", 
+           style = "fixed", 
+           title.col = c("Authors"), 
+           lwd =12)
+```
+
+
+We see that *truccotrucco* and *truthforcadau* were Abila Park where the POK rally was held. Then *truccotrucco*  left the park and went to “Carly’s Coffee” , “Gelato Galore”. From the map we can see that *sofitees* was near *truccotrucco* witnessing the police stand off as well. *footfingers* and *trapanitweets* were at “Katerine’s Café” and could have witnessed the hit and run event. 
+
+Although there isn’t a lot of location information provided, knowing where these authors are can help to verify if the hypotheses we have drawn from the earlier visualisations are coherent.  
+
+## Dot Plot of Authors’ Text Messages 
+
+At the start of our report, we did not know enough information about the dataset to be able to effective make sense of all the messages in the dataframe. Now having identified the key event and authors, we can look specifically into all the messages by the author to draw more nuanced insights.  
+
+The interactive dot plot is similar to the previous dot plots created for *mentions* and *hashtags* with a few tweaks. First, ccdata will be included and labelled “cc” under the *author* column. Secondly, to view how the number of messages escalated over time, I used *row_number* instead of *add_tally* as a cumulative count.  
+
+```{r}
+comb1_authors2 <- comb1 %>% 
+  mutate(author = replace_na(author, "cc" )) %>% 
+  filter(author != "KronosQuoth" & author != "Clevvah4Evah" & author != "trollingsnark")%>% 
+  group_by(author) %>% 
+  mutate(n = row_number(author)) %>% 
+  ungroup() %>% 
+  arrange(time)
+```
+
+Rest of the code chunck is similar to previous dot plots.
+
+```{r}
+ax <- highlight_key(comb1_authors2)
+widgets <- bscols(
+  widths = c(3, 6, 3),
+  filter_checkbox("source", "Time Period", ax, ~source,  inline = TRUE),
+  filter_select("authors","Authors",ax,~author),
+  filter_checkbox("RT", "RT", ax, ~is_RT, inline = TRUE)
+)
+
+bscols(widths =c(12,12), 
+       widgets, 
+       plot_ly(ax, x = ~time, y=~n, showlegend = FALSE, color = ~factor(author) , 
+               hoverinfo ='text', 
+               text=~paste(Text, "</br></br>By ",author, " at ", time)) %>% 
+         layout(title = "Messages by Author Through the Evening", 
+                xaxis = list(title = "Time Slider", 
+                             rangeslider = list(bgcolor = "#f0f8ff" ,type = "time"), 
+                             yaxis = list(title = "Number of Messages by Author"), 
+                             categoryarray = ~time, categoryorder ='array'  ), 
+                autosize=F)%>% 
+         add_markers() 
+       )
+```
+```
+
+
 
 
 
